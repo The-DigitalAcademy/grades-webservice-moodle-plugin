@@ -19,6 +19,7 @@ class get_ungraded_submissions extends \core_external\external_api {
     public static function execute_returns() {
         return new external_multiple_structure(
             new external_single_structure([
+                'id' => new external_value(PARAM_TEXT, 'item id'),
                 'coursename' => new external_value(PARAM_TEXT, 'course name'),
                 'activitytype' => new external_value(PARAM_TEXT, 'type of activity (assign, quiz, forum)'),
                 'activityname' => new external_value(PARAM_TEXT, 'activity name'),
@@ -37,6 +38,7 @@ class get_ungraded_submissions extends \core_external\external_api {
         
         $assign_sql = "
             SELECT
+                CONCAT('a', asub.id) as id,
                 asub.timemodified,
                 a.name as activityname,
                 'assign' as activitytype,
@@ -71,7 +73,7 @@ class get_ungraded_submissions extends \core_external\external_api {
 
         $quiz_sql = "
             SELECT 
-                quiza.id as submissionid,
+                CONCAT('q', quiza.id) as id,
                 c.fullname as coursename,
                 'quiz' as activitytype,
                 q.name as activityname,
