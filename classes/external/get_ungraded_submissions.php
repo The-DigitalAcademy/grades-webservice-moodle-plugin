@@ -77,7 +77,7 @@ class get_ungraded_submissions extends \core_external\external_api {
                 c.fullname as coursename,
                 'quiz' as activitytype,
                 q.name as activityname,
-                CONCAT(U.firstname, ' ', U.lastname) as username,
+                CONCAT(u.firstname, ' ', u.lastname) as username,
                 quiza.timemodified,
                 CONCAT('/course/view.php', CHAR(63), 'id=', c.id) as coursepath,
                 CONCAT('/mod/quiz/view.php', CHAR(63), 'id=', cm.id) as activitypath,
