@@ -9,4 +9,10 @@ $functions = [
         'type' => 'read',
         'ajax' => true
     ],
+    'local_grades_get_activity_reports' => [
+        'classname' => 'local_grades\external\get_activity_reports',
+        'description' => "get students' course activity data",
+        'type' => 'read',
+        'ajax' => true
+    ],
 ];
