@@ -64,7 +64,7 @@ class get_ungraded_submissions extends \core_external\external_api {
             LEFT JOIN {assign_grades} ag
                 ON ag.assignment = asub.assignment
                 AND ag.userid = asub.userid
-            WHERE asub.status = 'submitted' AND (ag.grade IS NULL OR ag.grade < 0)
+            WHERE asub.status = 'submitted' AND (ag.grade IS NULL OR ag.grade < 0) AND u.suspended = FALSE
             ORDER BY asub.id
         ";
 
@@ -102,7 +102,7 @@ class get_ungraded_submissions extends \core_external\external_api {
             LEFT JOIN {quiz_grades} qg
                 ON qg.userid = quiza.userid
                 AND qg.quiz = quiza.quiz
-            WHERE qg.grade IS NULL
+            WHERE qg.grade IS NULL AND u.suspended = FALSE
             ORDER BY quiza.id
         ";
 
