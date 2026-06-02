@@ -99,6 +99,10 @@ class get_ungraded_submissions extends \core_external\external_api {
                 ON c.id = q.course
             JOIN {user} u
                 ON u.id = quiza.userid
+            LEFT JOIN {quiz_grades} qg
+                ON qg.userid = quiza.userid
+                AND qg.quiz = quiza.quiz
+            WHERE qg.grade IS NULL
             ORDER BY quiza.id
         ";
 
