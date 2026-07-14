@@ -39,7 +39,7 @@ $functions = [
 // grading function rather than granting a token access to every enabled
 // web service function in this plugin.
 $services = [
-    'AI Essay Grader' => [
+    'AI Grades Service' => [
         'functions'       => ['local_grades_set_essay_grade'],
         'restrictedusers' => 1,     // Requires explicit user authorisation for this service.
         'enabled'         => 1,

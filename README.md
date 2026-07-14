@@ -1,11 +1,11 @@
 # Local Grades Web Service API
-A Moodle local plugin that provides a custom web service endpoint to fetch grading related data.
+A Moodle local plugin that provides a custom web service endpoint to fetch grading related data, and to grade quiz essay questions via an AI grading pipeline.
 
 
 ## 🛠 Installation
 ### Prerequisites
 - Administrator access to the Moodle instance.
-- Moodle 5.x or later
+- Moodle 4.5 or later
 - PHP 8+
 
 ### Step-by-step Installation
@@ -27,8 +27,8 @@ git clone https://github.com/The-DigitalAcademy/grades-webservice-moodle-plugin 
 ```
 3. Log in as an administrator to your Moodle site.
 4. Navigate to Site administration > Notifications. Moodle will detect the new plugin and prompt you to Install it.
-6. Follow the on-screen prompts to complete the installation.
-7. To use the API externally:
+5. Follow the on-screen prompts to complete the installation.
+6. To use the API externally:
     - Go to Site Administration > Server > Web Services.
     - Add the functions to a service.
     - Ensure the user accessing the service has the necessary capabilities.
@@ -39,6 +39,7 @@ Documentation Link: https://your-moodle-site.com/admin/webservice/documentation.
 ### functions
 - `local_grades_get_ungraded_submissions` - get ungraded submission items that require manaul grading
 - `local_grades_get_activity_reports` - get students' course activity data from tagged courses, activites and selected groups.
+- `local_grades_set_essay_grade` — grade a single essay question slot within a quiz attempt and push the result through Moodle's grading pipeline to the gradebook. Requires the `local/grades:setessaygrade` capability, which is **not** granted to any role by default — assign it explicitly to your AI grading service account's role.
 
 **Example**
 
@@ -47,6 +48,16 @@ curl -X GET "https://your-moodle-site.com/webservice/rest/server.php" \
      -d "wstoken=YOUR_WEB_SERVICE_TOKEN" \
      -d "wsfunction=local_grades_get_ungraded_submissions" \
      -d "moodlewsrestformat=json"
+
+curl -X POST "https://your-moodle-site.com/webservice/rest/server.php" 
+-d "wstoken=YOUR_WEB_SERVICE_TOKEN" 
+-d "wsfunction=local_grades_set_essay_grade" 
+-d "moodlewsrestformat=json" 
+-d "attemptid=123" 
+-d "slot=11" 
+-d "grade=4.5" 
+-d "feedback=Well argued, with a clear South African example." 
+-d "feedbackformat=1"
 ```
 
 ## Developer Resources
