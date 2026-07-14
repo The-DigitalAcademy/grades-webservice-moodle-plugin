@@ -10,3 +10,5 @@ $string['activity_report_groups_desc'] = 'Groups that will be included in the ac
 
 $string['activity_report_tag'] = 'Activity Report Tag';
 $string['activity_report_tag_desc'] = 'Tag name for assignments/quizzes that will be included in the report. Add this tag name to the relevant assignment or quiz.';
+
+$string['invalidattemptid'] = 'Could not load quiz attempt: {$a}';
