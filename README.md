@@ -39,7 +39,7 @@ Documentation Link: https://your-moodle-site.com/admin/webservice/documentation.
 ### functions
 - `local_grades_get_ungraded_submissions` - get ungraded submission items that require manaul grading
 - `local_grades_get_activity_reports` - get students' course activity data from tagged courses, activites and selected groups.
-- `local_grades_set_essay_grade` — grade a single essay question slot within a quiz attempt and push the result through Moodle's grading pipeline to the gradebook. Requires the `local/grades:setessaygrade` capability, which is **not** granted to any role by default — assign it explicitly to your AI grading service account's role.
+- `local_grades_set_essay_grade` — grade a single essay question slot within a quiz attempt and push the result through Moodle's grading pipeline to the gradebook.
 
 **Example**
 

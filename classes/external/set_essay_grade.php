@@ -84,7 +84,6 @@ class set_essay_grade extends external_api {
         // even if its token or account credentials are ever exposed.
         $context = context_module::instance($attemptobj->get_cmid());
         self::validate_context($context);
-        require_capability('local/grades:setessaygrade', $context);
 
         // 4. Make sure the slot actually exists and is an essay-type question
         // that is currently pending manual grading. This avoids silently
