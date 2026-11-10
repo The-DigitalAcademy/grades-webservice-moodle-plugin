@@ -39,7 +39,7 @@ $functions = [
 // web service function in this plugin.
 $services = [
     'Grade Quiz Essays Web Service' => [
-        'functions'       => ['local_grades_set_essay_grade'],
+        'functions'       => ['local_grades_set_essay_grade', 'mod_quiz_get_attempt_review'],
         'restrictedusers' => 1,     // Requires explicit user authorisation for this service.
         'enabled'         => 1,
         'shortname'       => 'grade_quiz_essays_ws',
