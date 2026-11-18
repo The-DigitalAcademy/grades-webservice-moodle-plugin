@@ -55,7 +55,7 @@ $services = [
         'uploadfiles'     => 0,
     ],
     'Grade Assignments Web Service' => [
-        'functions'       => ['mod_assign_save_grade'],
+        'functions'       => ['mod_assign_save_grade', 'mod_assign_get_submission_status'],
         'restrictedusers' => 1,     // Requires explicit user authorisation for this service.
         'enabled'         => 1,
         'shortname'       => 'grade_assignments_ws',
