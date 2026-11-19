@@ -9,7 +9,7 @@
  */
 
 $plugin->component = 'local_grades';
-$plugin->version   = 2026071300;      // YYYYMMDDXX — bumped for merge
+$plugin->version   = 2026111900;      // YYYYMMDDXX — bumped for merge
 $plugin->requires  = 2024100700;      // Moodle 4.5+ — raised to match set_essay_grade.php's API usage (core_external\, mod_quiz\quiz_attempt, manual_grade())
 $plugin->maturity  = MATURITY_BETA;
 $plugin->release   = '0.2.0';

@@ -14,16 +14,18 @@ defined('MOODLE_INTERNAL') || die();
 $functions = [
     'local_grades_get_ungraded_submissions' => [
         'classname'   => 'local_grades\external\get_ungraded_submissions',
-        'description' => 'get ungraded submission items that require manaul grading',
+        'description' => 'Get ungraded submission items that require manual grading.',
         'type'        => 'read',
         'ajax'        => true,
     ],
+
     'local_grades_get_activity_reports' => [
         'classname'   => 'local_grades\external\get_activity_reports',
-        'description' => "get students' course activity data",
+        'description' => 'Get students course activity data.',
         'type'        => 'read',
         'ajax'        => true,
     ],
+
     'local_grades_set_essay_grade' => [
         'classname'    => 'local_grades\external\set_essay_grade',
         'methodname'   => 'execute',
@@ -35,15 +37,24 @@ $functions = [
     ],
 ];
 
-// A dedicated external service so you can scope a token to just the essay
-// grading function rather than granting a token access to every enabled
-// web service function in this plugin.
 $services = [
     'AI Grades Service' => [
         'functions'       => ['local_grades_set_essay_grade'],
-        'restrictedusers' => 1,     // Requires explicit user authorisation for this service.
+        'restrictedusers' => 1,
         'enabled'         => 1,
         'shortname'       => 'local_grades_service',
+        'downloadfiles'   => 0,
+        'uploadfiles'     => 0,
+    ],
+
+    'Grades and Reports Web Service' => [
+        'functions'       => [
+            'local_grades_get_activity_reports',
+            'local_grades_get_ungraded_submissions',
+        ],
+        'restrictedusers' => 1,
+        'enabled'         => 1,
+        'shortname'       => 'grades_and_reports_ws',
         'downloadfiles'   => 0,
         'uploadfiles'     => 0,
     ],
