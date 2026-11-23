@@ -15,7 +15,14 @@ class get_activity_reports extends \core_external\external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters(): external_function_parameters {
-        return new external_function_parameters([]);
+        return new external_function_parameters([
+            'since' => new external_value(
+                PARAM_INT,
+                'Only return records modified since this timestamp',
+                VALUE_DEFAULT,
+                0
+            ),
+        ]);
     }
 
     public static function execute_returns() {
@@ -32,13 +39,20 @@ class get_activity_reports extends \core_external\external_api {
                 'grade' => new external_value(PARAM_FLOAT, "learner's grade for activity"),
                 'duedate' => new external_value(PARAM_INT, "activity due date timestamp"),
                 'submissiondate' => new external_value(PARAM_INT, "submission date timestamp"),
+                'timemodified' => new external_value(PARAM_INT, "last modification timestamp"),
                 'submissionstatus' => new external_value(PARAM_TEXT, "submission status"),
             ])
         );
     }
 
-    public static function execute() {
+    public static function execute(int $since = 0) {
         global $DB;
+
+        $params = self::validate_parameters(
+            self::execute_parameters(),
+            ['since' => $since]
+        );
+        $since = $params['since'];
 
         // Resolve Course Tag: Only process courses marked with this specific tag.
         $course_tagname = get_config('local_grades', 'course_report_tag');
@@ -58,7 +72,12 @@ class get_activity_reports extends \core_external\external_api {
         $groupstr = get_config('local_grades', 'activity_report_groups');
         $groupids = !empty($groupstr) ? explode(',', $groupstr) : [];
 
-        $records = dataquery_helper::get_activity_data($courseids, $groupids, [$activity_tagid]);
+        $records = dataquery_helper::get_activity_data(
+            $courseids, 
+            $groupids, 
+            [$activity_tagid],
+            $since
+        );
 
         return $records;
     }

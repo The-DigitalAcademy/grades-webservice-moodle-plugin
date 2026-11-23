@@ -35,7 +35,8 @@ class dataquery_helper {
     public static function get_activity_data(
         array $courseids,
         array $groupids,
-        array $activity_tagids
+        array $activity_tagids,
+        int $since = 0
     ) {
         global $DB;
 
@@ -74,6 +75,13 @@ class dataquery_helper {
         $params['now1'] = time();
         $params['now2'] = $params['now1'];
         $params['now3'] = $params['now1'];
+        $params['now4'] = $params['now1'];
+
+        // Incremental extraction checkpoint.
+        $params['since1'] = max(0, $since);
+        $params['since2'] = max(0, $since);
+        $params['since3'] = max(0, $since);
+        $params['since4'] = max(0, $since);
 
         $sql = "
             SELECT
@@ -177,6 +185,18 @@ class dataquery_helper {
                         END
                 END AS submissionstatus
 
+                ,
+                GREATEST(
+                    COALESCE(a_s.timemodified, 0),
+                    COALESCE(qa.timemodified, 0),
+                    COALESCE(fp.modified, 0),
+                    COALESCE(gg_a.timemodified, 0),
+                    COALESCE(gg_q.timemodified, 0),
+                    COALESCE(a.timemodified, 0),
+                    COALESCE(q.timemodified, 0),
+                    COALESCE(f.timemodified, 0)
+                ) AS timemodified
+
             FROM {groups} g
 
             JOIN {groups_members} gm
@@ -259,6 +279,46 @@ class dataquery_helper {
                 AND m.name IN ('quiz', 'assign', 'forum')
                 AND t.id $taginsql
                 AND u.suspended = 0
+                AND (
+                    :since1 = 0
+                    OR GREATEST(
+                        COALESCE(a_s.timemodified, 0),
+                        COALESCE(qa.timemodified, 0),
+                        COALESCE(fp.modified, 0),
+                        COALESCE(gg_a.timemodified, 0),
+                        COALESCE(gg_q.timemodified, 0),
+                        COALESCE(a.timemodified, 0),
+                        COALESCE(q.timemodified, 0),
+                        COALESCE(f.timemodified, 0)
+                    ) >= :since2
+                    OR (
+                        CASE
+                            WHEN m.name = 'assign'
+                                AND a_s.timemodified IS NULL
+                                THEN ao.duedate
+                            WHEN m.name = 'quiz' 
+                                AND qa.timemodified IS NULL
+                                THEN qo.timeclose
+                            WHEN m.name = 'forum' 
+                                AND fp.created IS NULL
+                                THEN f.duedate
+                            ELSE 0
+                        END > :since3
+                        AND
+                        CASE
+                            WHEN m.name = 'assign'
+                                AND a_s.timemodified IS NULL
+                                THEN ao.duedate
+                            WHEN m.name = 'quiz' 
+                                AND qa.timemodified IS NULL
+                                THEN qo.timeclose
+                            WHEN m.name = 'forum' 
+                                AND fp.created IS NULL
+                                THEN f.duedate
+                            ELSE 0
+                        END <= :now4
+                    )
+                )
 
             ORDER BY u.firstname, u.lastname
         ";
